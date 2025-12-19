@@ -16,6 +16,10 @@
         {
             "key": "taskId",
             "value": ""
+        },
+        {
+            "key": "userId",
+            "value": ""
         }
     ],
     "item": [
@@ -23,7 +27,7 @@
             "name": "Auth",
             "item": [
                 {
-                    "name": "Register",
+                    "name": "Register Admin",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -34,13 +38,13 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"fullName\": \"Gaurav Singh\",\n  \"email\": \"gaurav@test.com\",\n  \"mobileNo\": \"9999999999\",\n  \"password\": \"Password@123\",\n  \"role\": \"user\"\n}"
+                            "raw": "{\n  \"fullName\": \"Admin User\",\n  \"email\": \"admin@taskflow.com\",\n  \"mobileNo\": \"9876543210\",\n  \"password\": \"Admin@123\",\n  \"role\": \"admin\"\n}"
                         },
                         "url": "{{baseUrl}}/api/auth/register"
                     }
                 },
                 {
-                    "name": "Login",
+                    "name": "Register Regular User",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -51,7 +55,58 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"email\": \"gaurav@test.com\",\n  \"password\": \"Password@123\"\n}"
+                            "raw": "{\n  \"fullName\": \"John Doe\",\n  \"email\": \"john.doe@taskflow.com\",\n  \"mobileNo\": \"9123456789\",\n  \"password\": \"User@123\",\n  \"role\": \"user\"\n}"
+                        },
+                        "url": "{{baseUrl}}/api/auth/register"
+                    }
+                },
+                {
+                    "name": "Register Another User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"fullName\": \"Jane Smith\",\n  \"email\": \"jane.smith@taskflow.com\",\n  \"mobileNo\": \"9234567890\",\n  \"password\": \"User@123\",\n  \"role\": \"user\"\n}"
+                        },
+                        "url": "{{baseUrl}}/api/auth/register"
+                    }
+                },
+                {
+                    "name": "Login as Admin",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"admin@taskflow.com\",\n  \"password\": \"Admin@123\"\n}"
+                        },
+                        "url": "{{baseUrl}}/api/auth/login"
+                    }
+                },
+                {
+                    "name": "Login as User (John)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"john.doe@taskflow.com\",\n  \"password\": \"User@123\"\n}"
                         },
                         "url": "{{baseUrl}}/api/auth/login"
                     }
@@ -87,7 +142,7 @@
             "name": "Tasks",
             "item": [
                 {
-                    "name": "Create Task",
+                    "name": "Create Task (High Priority)",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -102,7 +157,49 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"title\": \"Learn MVC\",\n  \"description\": \"Understand MVC pattern\",\n  \"priority\": \"high\",\n  \"dueDate\": \"2025-01-31\"\n}"
+                            "raw": "{\n  \"title\": \"Complete Project Documentation\",\n  \"description\": \"Write comprehensive documentation for TaskFlow API including setup guide, endpoints, and examples\",\n  \"priority\": \"high\",\n  \"dueDate\": \"2025-12-31\",\n  \"assignedTo\": \"{{userId}}\"\n}"
+                        },
+                        "url": "{{baseUrl}}/api/tasks"
+                    }
+                },
+                {
+                    "name": "Create Task (Medium Priority)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Code Review for Authentication Module\",\n  \"description\": \"Review and test JWT authentication, middleware, and role-based access control\",\n  \"priority\": \"medium\",\n  \"dueDate\": \"2025-12-25\"\n}"
+                        },
+                        "url": "{{baseUrl}}/api/tasks"
+                    }
+                },
+                {
+                    "name": "Create Task (Low Priority)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Refactor Utility Functions\",\n  \"description\": \"Clean up and optimize utility functions in the utils directory\",\n  \"priority\": \"low\",\n  \"dueDate\": \"2026-01-15\"\n}"
                         },
                         "url": "{{baseUrl}}/api/tasks"
                     }
@@ -117,7 +214,124 @@
                                 "value": "Bearer {{token}}"
                             }
                         ],
-                        "url": "{{baseUrl}}/api/tasks"
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tasks?page=1&limit=5",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tasks"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Page number (default: 1)"
+                                },
+                                {
+                                    "key": "limit",
+                                    "value": "5",
+                                    "description": "Number of tasks per page (default: 5)"
+                                },
+                                {
+                                    "key": "priority",
+                                    "value": "high",
+                                    "description": "Filter by priority: low, medium, high",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "pending",
+                                    "description": "Filter by status: pending, completed",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get My Tasks (High Priority)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tasks?priority=high",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tasks"
+                            ],
+                            "query": [
+                                {
+                                    "key": "priority",
+                                    "value": "high"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get My Tasks (Pending)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tasks?status=pending",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tasks"
+                            ],
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "pending"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get My Tasks (Completed)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/tasks?status=completed",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "tasks"
+                            ],
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "completed"
+                                }
+                            ]
+                        }
                     }
                 },
                 {
@@ -149,9 +363,85 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"status\": \"completed\",\n  \"priority\": \"medium\"\n}"
+                            "raw": "{\n  \"title\": \"Updated Task Title\",\n  \"description\": \"Updated description\",\n  \"priority\": \"medium\",\n  \"dueDate\": \"2025-02-15\"\n}"
                         },
                         "url": "{{baseUrl}}/api/tasks/{{taskId}}"
+                    }
+                },
+                {
+                    "name": "Update Task Status",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"status\": \"completed\"\n}"
+                        },
+                        "url": "{{baseUrl}}/api/tasks/{{taskId}}/status"
+                    }
+                },
+                {
+                    "name": "Update Task Priority",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"priority\": \"high\"\n}"
+                        },
+                        "url": "{{baseUrl}}/api/tasks/{{taskId}}/priority"
+                    }
+                },
+                {
+                    "name": "Assign User to Task",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userId\": \"{{userId}}\"\n}"
+                        },
+                        "url": "{{baseUrl}}/api/tasks/{{taskId}}/assign"
+                    }
+                },
+                {
+                    "name": "Remove User from Task",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": "{{baseUrl}}/api/tasks/{{taskId}}/unassign"
                     }
                 },
                 {
